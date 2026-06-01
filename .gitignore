@@ -1,0 +1,13 @@
+# Chặn thư mục node_modules ở mọi nơi
+node_modules/
+**/node_modules/
+
+# Chặn các file bảo mật chứa thông tin database, mật khẩu
+.env
+**/.env
+
+# Chặn thư mục build của React sau khi chạy npm run build
+dist/
+build/
+**/dist/
+**/build/
