@@ -1,37 +1,31 @@
-import type { Quiz } from '../types/api.type'
-import { quizApi} from './quizApi'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-
+import type { Quiz } from '../types/api.type';
+import { quizApi } from './quizApi';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useQuizzes = () => {
   return useQuery<Quiz[]>({
     queryKey: ['quizzes'],
     queryFn: () => quizApi.getAll(),
-  })
-}
+  });
+};
 
 export const useQuizById = (id: string) => {
   return useQuery<Quiz>({
     queryKey: ['quiz', id],
     queryFn: () => quizApi.getById(id),
     enabled: !!id,
-  })
-}
-
+  });
+};
 
 export const useUpdateQuiz = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    // Vì hàm quizApi.update nhận 2 tham số (id, data), ta bọc lại thành 1 object nhận vào mutationFn
     mutationFn: ({ id, data }: { id: string; data: Partial<Quiz> }) => 
       quizApi.update(id, data),
-    
-    onSuccess: (_, variables) => {
-      // 1. Làm mới danh sách quizzes tổng
+    onSuccess: (dataResult, variables) => {
+      console.log('Updated quiz:', dataResult);
       queryClient.invalidateQueries({ queryKey: ['quizzes'] });
-      
-      // 2. Làm mới luôn cả dữ liệu chi tiết của chính quiz đó nếu đang mở rộng xem
       queryClient.invalidateQueries({ queryKey: ['quizzes', variables.id] });
     },
   });
@@ -43,8 +37,8 @@ export const useDeleteQuiz = () => {
 
   return useMutation({
     mutationFn: quizApi.delete,
-    onSuccess: () => {
-      // Sau khi xóa thành công, thông báo cho React Query làm mới lại danh sách dữ liệu
+    onSuccess: (dataResult) => {
+      console.log('Deleted quiz:', dataResult);
       queryClient.invalidateQueries({ queryKey: ['quizzes'] });
     },
   });
@@ -56,9 +50,9 @@ export const useCreateQuiz = () => {
 
   return useMutation({
     mutationFn: quizApi.create,
-    onSuccess: () => {
+    onSuccess: (dataResult) => {
+      console.log('Created quiz:', dataResult);
       queryClient.invalidateQueries({ queryKey: ['quizzes'] });
     },
   });
 };
-
