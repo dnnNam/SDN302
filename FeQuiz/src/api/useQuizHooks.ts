@@ -19,7 +19,6 @@ export const useQuizById = (id: string) => {
 
 export const useUpdateQuiz = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<Quiz> }) => 
       quizApi.update(id, data),
@@ -31,10 +30,8 @@ export const useUpdateQuiz = () => {
   });
 };
 
-// 3. Hook xóa một Quiz (Mutation)
 export const useDeleteQuiz = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: quizApi.delete,
     onSuccess: (dataResult) => {
@@ -44,10 +41,8 @@ export const useDeleteQuiz = () => {
   });
 };
 
-// 4. Hook tạo mới một Quiz
 export const useCreateQuiz = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: quizApi.create,
     onSuccess: (dataResult) => {
