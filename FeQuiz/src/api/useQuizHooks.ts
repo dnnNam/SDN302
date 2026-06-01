@@ -27,7 +27,7 @@ export const useUpdateQuiz = () => {
     mutationFn: ({ id, data }: { id: string; data: Partial<Quiz> }) => 
       quizApi.update(id, data),
     
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // 1. Làm mới danh sách quizzes tổng
       queryClient.invalidateQueries({ queryKey: ['quizzes'] });
       
