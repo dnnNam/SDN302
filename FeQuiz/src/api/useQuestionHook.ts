@@ -9,7 +9,7 @@ export const useCreateQuestion = () => {
   return useMutation({
     mutationFn: ({ quizId, data }: { quizId: string; data: Partial<Question> }) =>
       questionApi.create({ ...data, quizId }),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Làm mới dữ liệu chi tiết của bài quiz chứa câu hỏi này để UI đồng bộ lập tức
       queryClient.invalidateQueries({ queryKey: ['quiz', variables.quizId] });
     },
@@ -23,7 +23,7 @@ export const useUpdateQuestion = () => {
   return useMutation({
     mutationFn: ({  questionId, data }: { quizId: string; questionId: string; data: Partial<Question> }) =>
       questionApi.update(questionId, data),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Làm mới dữ liệu chi tiết của bài quiz
       queryClient.invalidateQueries({ queryKey: ['quiz', variables.quizId] });
     },
@@ -37,7 +37,7 @@ export const useDeleteQuestion = () => {
   return useMutation({
     mutationFn: ({  questionId }: { quizId: string; questionId: string }) =>
       questionApi.delete(questionId),
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Làm mới dữ liệu chi tiết của bài quiz để xóa câu hỏi khỏi danh sách giao diện
       queryClient.invalidateQueries({ queryKey: ['quiz', variables.quizId] });
     },
